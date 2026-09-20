@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameDev Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="scene">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">◆</span>
+        <span class="brand-text">GAMEDEV<span class="brand-accent">.CARDS</span></span>
+      </div>
+
+      <div class="mode-toggle" role="tablist" aria-label="เลือกโหมด">
+        <button class="mode-btn active" id="modeReviewBtn" role="tab" aria-selected="true">ทบทวน</button>
+        <button class="mode-btn" id="modeQuizBtn" role="tab" aria-selected="false">ทดสอบ</button>
+      </div>
+
+      <div class="progress-wrap" aria-label="progress">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-label" id="progressLabel">0 / 0 ผ่านแล้ว</span>
+      </div>
+    </header>
+
+    <main class="stage">
+
+      <!-- ===== โหมดทบทวน (flip card, self-report แบบ SM-2) ===== -->
+      <section class="deck-view" id="deckView">
+        <p class="deck-eyebrow">รอบที่ <span id="roundNum">1</span></p>
+        <div class="card" id="card" tabindex="0" role="button" aria-label="พลิกการ์ดเพื่อดูเฉลย">
+          <div class="card-inner" id="cardInner">
+            <div class="card-face card-front">
+              <p class="card-kicker">คำถาม</p>
+              <p class="card-text" id="questionText">กำลังโหลด...</p>
+              <p class="card-hint">แตะการ์ด หรือกด Space เพื่อดูเฉลย</p>
+            </div>
+            <div class="card-face card-back">
+              <p class="card-kicker">เฉลย</p>
+              <p class="card-text" id="answerText"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="answer-controls" id="answerControls">
+          <button class="btn btn-unsure" id="btnUnsure">
+            <span class="btn-key">1</span> ยังไม่แม่น
+          </button>
+          <button class="btn btn-know" id="btnKnow">
+            <span class="btn-key">2</span> จำได้แล้ว
+          </button>
+        </div>
+      </section>
+
+      <!-- ===== โหมดทดสอบ (multiple choice) ===== -->
+      <section class="quiz-view hidden" id="quizView">
+        <p class="deck-eyebrow">ข้อที่ <span id="quizIndex">1</span> / <span id="quizTotalLabel">0</span></p>
+        <div class="quiz-card">
+          <p class="card-kicker">คำถาม</p>
+          <p class="card-text" id="quizQuestion">กำลังโหลด...</p>
+        </div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <button class="btn btn-next hidden" id="btnNext">ข้อถัดไป</button>
+      </section>
+
+      <!-- ===== หน้าจบรอบ (ใช้ร่วมกันทั้งสองโหมด) ===== -->
+      <section class="done-view hidden" id="doneView">
+        <p class="done-eyebrow" id="doneEyebrow">เคลียร์เด็คแล้ว</p>
+        <h1 class="done-title">จบรอบนี้ 🎮</h1>
+        <p class="done-stat" id="doneStat"></p>
+        <button class="btn btn-restart" id="btnRestart">เล่นใหม่อีกครั้ง</button>
+      </section>
+
+    </main>
+
+    <footer class="foot">
+      <p>ชุดคำถามเกี่ยวกับการพัฒนาเกม — ทำเป็นโปรเจกต์ฝึกฝน Frontend</p>
+    </footer>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
