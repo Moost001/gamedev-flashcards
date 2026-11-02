@@ -1,5 +1,5 @@
 // ---------- deck data ----------
-// แก้ไข/เพิ่มคำถามของคุณเองได้ตรงนี้เลย
+// แก้ไข/เพิ่มคำถาม
 const DECK = [
   { q: "Game Loop คืออะไร", a: "วงรอบหลักของเกมที่ทำงานซ้ำต่อเนื่อง (update → render) เพื่อให้เกมขยับและตอบสนองผู้เล่นตลอดเวลา" },
   { q: "Sprite คืออะไร", a: "ภาพ 2D ที่ใช้แทนตัวละครหรือวัตถุในเกม มักเป็นส่วนหนึ่งของ Sprite Sheet" },
@@ -24,6 +24,7 @@ let reviewQueue = [];
 let reviewTotal = 0;
 let reviewKnownCount = 0;
 let isFlipped = false;
+let reviewMissed = new Set(); // index ของการ์ดที่เคยกด "ยังไม่แม่น" ในรอบนี้
 
 // ---------- quiz mode state ----------
 let quizOrder = [];      // ลำดับ index คำถามทั้งชุดของรอบนี้ (สุ่มแล้ว)
@@ -93,13 +94,14 @@ modeReviewBtn.addEventListener('click', () => setMode('review'));
 modeQuizBtn.addEventListener('click', () => setMode('quiz'));
 
 // =========================================================
-// โหมดทบทวน (flip card, self-report แบบเดียวกับ SM-2)
+// โหมดทบทวน (flip card, spaced repetition อย่างง่าย)
 // =========================================================
 
 function startReview(){
   reviewQueue = shuffle(DECK.map((_, i) => i));
   reviewTotal = reviewQueue.length;
   reviewKnownCount = 0;
+  reviewMissed = new Set();
   isFlipped = false;
   roundNum.textContent = round;
   updateReviewProgress();
@@ -137,8 +139,10 @@ function answerReviewCard(knewIt){
   if(!isFlipped || reviewQueue.length === 0) return;
   const idx = reviewQueue.shift();
   if(knewIt){
-    reviewKnownCount++;
+    // นับเฉพาะการ์ดที่ไม่เคยพลาดในรอบนี้
+    if(!reviewMissed.has(idx)) reviewKnownCount++;
   } else {
+    reviewMissed.add(idx);
     const insertAt = Math.min(3, reviewQueue.length);
     reviewQueue.splice(insertAt, 0, idx);
     reviewTotal++;
